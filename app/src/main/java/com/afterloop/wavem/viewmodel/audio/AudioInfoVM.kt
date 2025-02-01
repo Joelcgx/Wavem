@@ -8,7 +8,6 @@ import com.afterloop.wavem.data.model.AudioInfoModel
 import com.arthenica.ffmpegkit.FFprobeKit
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import okhttp3.internal.toLongOrDefault
 import java.util.Locale
 import javax.inject.Inject
 
@@ -37,7 +36,8 @@ class AudioInfoVM @Inject constructor() : ViewModel() {
                 bitsPerSample = stream?.optString("sample_fmt")
             }
             val size = bytesToMegaBytes(it.mediaInformation.size.toLong())
-            val duration = secondsToMinutes(it.mediaInformation.duration.toLongOrDefault(0L))
+            val durationSeconds = it.mediaInformation.duration.toDouble()
+            val duration = secondsToMinutes(durationSeconds.toLong())
             val tags =
                 it.mediaInformation.allProperties.getJSONObject("format").optJSONObject("tags")
 
