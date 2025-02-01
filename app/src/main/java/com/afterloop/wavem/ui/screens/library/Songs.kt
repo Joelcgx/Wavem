@@ -68,7 +68,6 @@ private fun SongItem(audio: Audio) {
                 onOptionSelected = { option ->
                     // Manejar selección aquí
                     when (option.title) {
-
                     }
                 },
                 label = "Menú de opciones",

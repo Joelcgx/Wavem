@@ -43,8 +43,12 @@ android {
 }
 
 dependencies {
+    // FFmpegKit
+    implementation(files("../libs/ffmpeg-kit.aar"))
+    implementation(files("../libs/smart-exception-common-0.2.1.jar"))
+    implementation(files("../libs/smart-exception-java-0.2.1.jar"))
     // Compose Unstyled
-    implementation("com.composables:core:1.20.0")
+    implementation(libs.core)
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
