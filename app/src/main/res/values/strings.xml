@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name" translatable="false">Wavem</string>
+    <string name="permission_setup_title" translatable="false">Wavem Setup</string>
+    <string name="permission_setup_message">Wavem requires permissions to read audio files and post notifications to ensure smooth operation. The audio read permission allows the app to access and convert your audio files. The post notification permission keeps you informed about the status of the conversion, such as when it’s complete or if an error occurs.</string>
+    <string name="permissions_required_label">Permissions Required</string>
+    <string name="permission_setup_button_text">Set up permissions</string>
+    <string name="permission_setup_cancel_button_text">Cancel</string>
+    <string name="permissions_audio_title">Audio Read Permission</string>
+    <string name="permissions_audio_message">The audio read permission allows the app to access and convert your audio files.</string>
+    <string name="permissions_notification_title">Notification Permission</string>
+    <string name="permissions_notification_message">The notification permission keeps you informed about the status of the conversion, such as when it’s complete or if an error occurs.</string>
+    <string name="showRationeale_label_dialog">All permissions required</string>
+    <string name="showRationale_message_dialog">In order to convert your audio files and notify you when they\'re ready, we need access to the audio files and permissions to send notifications.</string>
+    <string name="drawer_label_library">Library</string>
+    <string name="drawer_label_converter">Converter</string>
+    <string name="app_version" translatable="false">Version 0.1.0</string>
+    <string name="settings_label">Settings</string>
+    <string name="language_en">English</string>
+    <string name="language_es">Spanish</string>
+    <string name="settings_lang_label">Language</string>
+    <string name="settings_theme_label">Theme</string>
+    <string name="settings_audio_label">Audio</string>
+    <string name="audio_low_latency_label">Low Latency</string>
+    <string name="audio_low_latency_description">Enable Audio Low Latency (require more energy)</string>
+    <string name="alertDialog_restart_title">Restart Required</string>
+    <string name="alertDialog_restart_message">The app needs to be restarted to apply the changes.</string>
+    <string name="alertDialog_restart_label">Restart</string>
+    <string name="audio_pcm_output_label">Audio PCM Output Mode</string>
+    <string name="audio_pcm_output_description">PCM audio output mode in which the Playback will be processed</string>
+    <string name="library_tab_songs">Songs</string>
+    <string name="library_tab_artist">Artists</string>
+    <string name="library_tab_albums">Albums</string>
+    <string name="library_tab_playlist" translatable="false">Playlist</string>
+    <string name="library_options_play">Play</string>
+    <string name="library_options_convert">Convert</string>
+    <string name="library_option_info">Info</string>
+
+</resources>
