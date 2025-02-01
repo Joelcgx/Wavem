@@ -9,11 +9,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
@@ -33,26 +35,32 @@ fun SongsContent(audioVM: GetLocalAudio, lazyListState: LazyListState) {
         state = lazyListState
     ) {
         items(audioList.size, key = { audioList[it].id }) { index ->
-            SongItem(audio = audioList[index])
+            SongItem(audio = audioList[index], audioVM = audioVM)
         }
     }
 }
 
 @Composable
-private fun SongItem(audio: Audio) {
+private fun SongItem(audio: Audio, audioVM: GetLocalAudio) {
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) } // Estado para controlar la visibilidad del diálogo
+
+    // Lista de opciones del menú
     val menuOptions = listOf(
-        OptionsModel(stringResource(R.string.library_options_play), R.drawable.ic_play_filled),
-        OptionsModel(stringResource(R.string.library_options_convert), R.drawable.ic_audio),
-        OptionsModel(stringResource(R.string.library_option_info), R.drawable.ic_info)
+        MenuOption.Play,
+        MenuOption.Convert,
+        MenuOption.Info
     )
 
     ListItem(
         leadingContent = {
             AsyncImage(
                 modifier = Modifier.size(40.dp),
-                model = ImageRequest.Builder(context).data(audio.albumArt).crossfade(true)
-                    .placeholder(R.drawable.ic_albumart_placeholder).build(),
+                model = ImageRequest.Builder(context)
+                    .data(audio.albumArt)
+                    .crossfade(true)
+                    .placeholder(R.drawable.ic_albumart_placeholder)
+                    .build(),
                 contentDescription = "Album Art",
                 contentScale = ContentScale.Crop,
                 error = painterResource(R.drawable.ic_albumart_placeholder),
@@ -66,8 +74,15 @@ private fun SongItem(audio: Audio) {
             PopupMenuComponent(
                 options = menuOptions,
                 onOptionSelected = { option ->
-                    // Manejar selección aquí
-                    when (option.title) {
+                    when (option) {
+                        MenuOption.Play -> {}
+
+                        MenuOption.Convert -> {}
+
+                        MenuOption.Info -> {
+                            // Mostrar diálogo de información
+                            showDialog = true
+                        }
                     }
                 },
                 label = "Menú de opciones",
@@ -76,4 +91,5 @@ private fun SongItem(audio: Audio) {
             )
         }
     )
+    InfoDialog(showDialog = showDialog, onShowDialog = { showDialog = false }, audio = audio)
 }

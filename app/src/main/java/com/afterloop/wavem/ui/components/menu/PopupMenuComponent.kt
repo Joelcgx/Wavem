@@ -25,10 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.afterloop.wavem.R
-import com.afterloop.wavem.ui.screens.library.OptionsModel
+import com.afterloop.wavem.ui.screens.library.MenuOption
 import com.composables.core.Menu
 import com.composables.core.MenuButton
 import com.composables.core.MenuContent
@@ -38,8 +39,8 @@ import com.composables.core.rememberMenuState
 @Composable
 fun PopupMenuComponent(
     modifier: Modifier = Modifier,
-    options: List<OptionsModel>,
-    onOptionSelected: (OptionsModel) -> Unit,
+    options: List<MenuOption>,
+    onOptionSelected: (MenuOption) -> Unit,
     label: String,
     width: Dp = 140.dp,
     height: Dp = 40.dp
@@ -94,7 +95,7 @@ fun PopupMenuComponent(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = option.title,
+                                text = stringResource(option.title),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.padding(start = 12.dp)

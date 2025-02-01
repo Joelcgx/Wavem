@@ -20,7 +20,7 @@
     <string name="settings_audio_label">Audio</string>
     <string name="audio_low_latency_label">Baja Latencia</string>
     <string name="audio_low_latency_description">Habilitar audio de baja latencia (requiere más energía)</string>
-    <string name="alertDialog_restart_title">Reinicio Requerido</string>
+    <string name="alertDialog_restart_title">Es necesario reiniciar</string>
     <string name="alertDialog_restart_message">Es necesario reiniciar la aplicación para aplicar los cambios.</string>
     <string name="alertDialog_restart_label">Reiniciar</string>
     <string name="audio_pcm_output_label">Modo de Salida PCM</string>
@@ -31,4 +31,22 @@
     <string name="library_options_play">Reproducir</string>
     <string name="library_options_convert">Convertir</string>
     <string name="library_option_info">Informacion</string>
+    <string name="dialog_info_title">Informacion de Audio</string>
+    <string name="dialog_track_title">Titulo</string>
+    <string name="dialog_track_artist">Atrtista</string>
+    <string name="dialog_info_close">Cerrar</string>
+    <string name="dialog_track_path">Ruta del archivo</string>
+    <string name="dilaog_track_size">Tamaño</string>
+    <string name="dialog_track_format">Formato</string>
+    <string name="dialog_track_bitrate">Tasa de Bits</string>
+    <string name="dialog_track_samplerate">Frecuencia de Muestreo</string>
+    <string name="dialog_track_channels">Canales</string>
+    <string name="dialog_track_bits_per_sample">Bits por muestra</string>
+    <string name="dialog_track_date">Fecha</string>
+    <string name="dialog_track_duration">Duracion</string>
+    <string name="dialog_track_number_of_tracks">Numero de pista</string>
+    <string name="dialog_track_disc_number">Numero de disco</string>
+    <string name="dialog_track_album">Album</string>
+    <string name="dialog_track_composer">Compositor</string>
+    <string name="dialog_track_genre">Genero</string>
 </resources>

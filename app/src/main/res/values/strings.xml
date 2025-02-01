@@ -34,5 +34,23 @@
     <string name="library_options_play">Play</string>
     <string name="library_options_convert">Convert</string>
     <string name="library_option_info">Info</string>
+    <string name="dialog_info_title">Audio Info</string>
+    <string name="dialog_track_title">Title</string>
+    <string name="dialog_track_artist">Artist</string>
+    <string name="dialog_info_close">Close</string>
+    <string name="dialog_track_path">File path</string>
+    <string name="dilaog_track_size">Size</string>
+    <string name="dialog_track_format">Format</string>
+    <string name="dialog_track_bitrate">Bitrate</string>
+    <string name="dialog_track_samplerate">Samplerate</string>
+    <string name="dialog_track_channels">Channels</string>
+    <string name="dialog_track_bits_per_sample">Bits per sample</string>
+    <string name="dialog_track_date">Date</string>
+    <string name="dialog_track_duration">Duration</string>
+    <string name="dialog_track_number_of_tracks">Track number</string>
+    <string name="dialog_track_disc_number">Disc number</string>
+    <string name="dialog_track_album">Album</string>
+    <string name="dialog_track_composer">Composer</string>
+    <string name="dialog_track_genre">Genre</string>
 
 </resources>
