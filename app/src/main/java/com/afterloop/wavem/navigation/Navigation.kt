@@ -3,19 +3,24 @@ package com.afterloop.wavem.navigation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.afterloop.wavem.routes.WavemRoutes
-import com.afterloop.wavem.ui.components.drawers.DraweComponent
+import com.afterloop.wavem.ui.components.profile.MenuItems
+import com.afterloop.wavem.ui.components.profile.ProfileMenuDialog
+import com.afterloop.wavem.ui.components.profile.profileGoToSettings
 import com.afterloop.wavem.ui.components.topbars.TopAppBarComponent
 import com.afterloop.wavem.ui.screens.library.LibraryScreen
 import com.afterloop.wavem.viewmodel.audio.GetLocalAudio
@@ -25,27 +30,39 @@ import kotlinx.coroutines.launch
 fun WavemNavigationUI() {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val context = LocalContext.current
+    var showSheet by remember { mutableStateOf(false) }
 
-    DraweComponent(content = {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopAppBarComponent {
-                    scope.launch {
-                        drawerState.open()
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBarComponent {
+                scope.launch {
+                    showSheet = true
+                }
+            }
+        }) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+            // Floating Sheet
+            ProfileMenuDialog(
+                show = showSheet,
+                onDismiss = { showSheet = false },
+                onMenuItemSelected = { menuItem ->
+                    when (menuItem) {
+                        is MenuItems.ProfileSettings -> {}
+                        is MenuItems.GeneralSettings -> profileGoToSettings(context)
+                        is MenuItems.HelpCenter -> {}
                     }
                 }
-            }) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(it)
-            ) {
-                WavemNavigation(navController)
-            }
+            )
+            // Main Content
+            WavemNavigation(navController)
         }
-    }, drawerState = drawerState, navHostController = navController)
+    }
 }
 
 @Composable

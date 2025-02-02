@@ -14,7 +14,7 @@ import com.afterloop.wavem.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarComponent(onDrawerState: () -> Unit) {
+fun TopAppBarComponent(onActions: () -> Unit) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -25,12 +25,11 @@ fun TopAppBarComponent(onDrawerState: () -> Unit) {
                 text = stringResource(R.string.app_name),
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
             )
-        }, navigationIcon = {
-            IconButton(
-                onClick = { onDrawerState() }
-            ) {
+        }, actions = {
+            IconButton(onClick = { onActions() }) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_menu), contentDescription = "Menu",
+                    painter = painterResource(R.drawable.ic_account),
+                    contentDescription = "Account",
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }

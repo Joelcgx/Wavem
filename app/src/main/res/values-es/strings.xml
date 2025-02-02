@@ -49,4 +49,6 @@
     <string name="dialog_track_album">Album</string>
     <string name="dialog_track_composer">Compositor</string>
     <string name="dialog_track_genre">Genero</string>
+    <string name="top_bar_menu_profile_settings">Configuracion del Perfil</string>
+    <string name="top_bar_menu_help">Ayuda</string>
 </resources>
