@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.afterloop.wavem.WavemApplication
 import com.afterloop.wavem.ui.screens.settings.WavemSettingsScreen
 import com.afterloop.wavem.ui.theme.WavemTheme
 import com.afterloop.wavem.utils.LocaleUtils
@@ -13,14 +14,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WavemSettingsActivity : ComponentActivity() {
-    // Aplica el locale al crear el contexto base
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(
-            LocaleUtils.setLocale(
-                newBase,
-                LocaleUtils.getSavedLanguage(newBase)
-            )
-        )
+        val appInstance = newBase.applicationContext as? WavemApplication
+        val lang = appInstance?.cachedLanguage ?: "en"
+        super.attachBaseContext(LocaleUtils.setLocale(newBase, lang))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

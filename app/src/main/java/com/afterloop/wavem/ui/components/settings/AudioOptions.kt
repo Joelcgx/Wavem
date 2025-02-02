@@ -20,6 +20,12 @@ data class AudioOptions(
                 isDropMenu = false
             ),
             AudioOptions(
+                title = stringResource(R.string.audio_power_saving_label),
+                description = stringResource(R.string.audio_power_saving_description),
+                isSwitch = true,
+                isDropMenu = false
+            ),
+            AudioOptions(
                 title = stringResource(R.string.audio_pcm_output_label),
                 description = stringResource(R.string.audio_pcm_output_label),
                 isSwitch = false,

@@ -10,21 +10,6 @@ import com.afterloop.wavem.MainActivity
 import java.util.Locale
 
 object LocaleUtils {
-    private const val PREFS_NAME = "WavemPreferences"
-    private const val LANGUAGE_KEY = "app_language"
-    private const val AUDIO_LOW_LATENCY_KEY = "audio_low_latency"
-
-    // Guardar el idioma en SharedPreferences
-    fun saveLanguage(context: Context, language: String) {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(LANGUAGE_KEY, language).apply()
-    }
-
-    // Obtener el idioma guardado
-    fun getSavedLanguage(context: Context): String {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return prefs.getString(LANGUAGE_KEY, "en") ?: "en"
-    }
 
     // Aplicar el idioma al contexto
     fun setLocale(context: Context, locale: String): Context {
@@ -60,13 +45,12 @@ object LocaleUtils {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
-    // Reiniciar la app
+    // Reiniciar la app (versión mejorada)
     fun restartApp(context: Context) {
         val intent = Intent(context, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(intent)
         (context as? Activity)?.finishAffinity()
-        Runtime.getRuntime().exit(0)
     }
 }

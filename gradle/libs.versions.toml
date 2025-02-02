@@ -4,6 +4,7 @@ agp = "8.9.0-beta01"
 animation = "1.7.7"
 coilCompose = "3.0.4"
 core = "1.20.0"
+datastorePreferences = "1.1.2"
 desugar_jdk_libs = "2.1.4"
 hiltAndroidCompiler = "2.54"
 hiltNavigationCompose = "1.2.0"
@@ -22,6 +23,7 @@ uiTextGoogleFonts = "1.7.7"
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }

@@ -51,4 +51,6 @@
     <string name="dialog_track_genre">Genero</string>
     <string name="top_bar_menu_profile_settings">Configuracion del Perfil</string>
     <string name="top_bar_menu_help">Ayuda</string>
+    <string name="audio_power_saving_label">Ahorro de energia</string>
+    <string name="audio_power_saving_description">Habilitar ahorro de energía para ahorrar energía</string>
 </resources>

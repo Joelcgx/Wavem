@@ -1,39 +1,39 @@
 package com.afterloop.wavem
 
 import android.app.Application
-import android.content.Context
-import android.content.res.Configuration
-import androidx.core.app.ComponentActivity
-import com.afterloop.wavem.utils.LocaleUtils
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStoreFile
 import dagger.hilt.android.HiltAndroidApp
-import java.util.Locale
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @HiltAndroidApp
 class WavemApplication : Application() {
+    val dataStore: DataStore<Preferences> by lazy {
+        PreferenceDataStoreFactory.create(
+            migrations = listOf(
+                SharedPreferencesMigration(
+                    context = this,
+                    sharedPreferencesName = "WavemPreferences"
+                )
+            ),
+            produceFile = { this.preferencesDataStoreFile("WavemPreferencesDataStore") }
+        )
+    }
+
+    // Variable para almacenar el idioma cargado (valor por defecto "en")
+    var cachedLanguage: String = "en"
+
     override fun onCreate() {
         super.onCreate()
-        applySavedLanguage()
-    }
-
-    private fun applySavedLanguage() {
-        val prefs = getSharedPreferences("WavemPreferences", Context.MODE_PRIVATE)
-        val lang = prefs.getString("app_language", "en") ?: "en"
-        LocaleUtils.applyLocale(this, lang)
-    }
-
-
-    override fun attachBaseContext(base: Context) {
-        val prefs = base.getSharedPreferences("app_prefs", MODE_PRIVATE)
-        val lang = prefs.getString("app_language", "en") ?: "en"
-        super.attachBaseContext(updateLocale(base, lang))
-    }
-
-    private fun updateLocale(context: Context, lang: String): Context {
-        val locale = Locale(lang)
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration).apply {
-            setLocale(locale)
+        // Precargamos el idioma desde DataStore una única vez al inicio
+        runBlocking {
+            val prefs = dataStore.data.first()
+            cachedLanguage = prefs[stringPreferencesKey("app_language")] ?: "en"
         }
-        return context.createConfigurationContext(config)
     }
 }

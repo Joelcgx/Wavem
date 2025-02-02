@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+    implementation("androidx.datastore:datastore-preferences-core:1.1.2")
     // FFmpegKit
     implementation(files("../libs/ffmpeg-kit.aar"))
     implementation(files("../libs/smart-exception-common-0.2.1.jar"))

@@ -77,9 +77,7 @@ fun WavemSettingsScreen(settingsVM: SettingsViewModel = hiltViewModel()) {
                         description = language.description,
                         selected = selectedLang == language.langCode,
                         onClick = {
-                            settingsVM.setSelectedLang(language.langCode) {
-                                settingsVM.setRequestRestart(true)
-                            }
+                            settingsVM.setSelectedLang(language.langCode)
                         }
                     )
                 }
@@ -104,34 +102,33 @@ fun WavemSettingsScreen(settingsVM: SettingsViewModel = hiltViewModel()) {
                 AudioOptions.getAudioOptions().forEach { audioOption ->
                     when {
                         // Switch Component
-                        audioOption.isSwitch -> {
-                            val lowLatencyEnabled by settingsVM.selectedAudioLowLatency.collectAsStateWithLifecycle(
-                                false
-                            )
-                            // Low Latency
+                        audioOption.isSwitch && audioOption.title == stringResource(R.string.audio_low_latency_label) -> {
+                            val lowLatencyEnabled by settingsVM.selectedAudioLowLatency.collectAsStateWithLifecycle(false)
                             SettingsSwitchableComponent(
                                 title = audioOption.title,
                                 description = audioOption.description,
                                 checkedState = lowLatencyEnabled,
-                                onClick = {
-                                    settingsVM.setAudioLowLatency(!lowLatencyEnabled)
-                                }
+                                onClick = { settingsVM.setAudioLowLatency(!lowLatencyEnabled) }
+                            )
+                        }
+                        audioOption.isSwitch && audioOption.title == stringResource(R.string.audio_power_saving_label) -> {
+                            val powerSavingModeEnabled by settingsVM.selectedAudioPowerSavingMode.collectAsStateWithLifecycle(false)
+                            SettingsSwitchableComponent(
+                                title = audioOption.title,
+                                description = audioOption.description,
+                                checkedState = powerSavingModeEnabled,
+                                onClick = { settingsVM.setAudioPowerSavingMode(!powerSavingModeEnabled) }
                             )
                         }
                         // DropMenu Component
                         audioOption.isDropMenu -> {
-                            // PCM Output mode
-                            val selectedPcmOuput by settingsVM.selectedPcmOutput.collectAsState()
-
+                            val selectedPcmOutput by settingsVM.selectedPcmOutput.collectAsState()
                             SettingsDropdownMenuComponent(
-                                title = stringResource(R.string.audio_pcm_output_label),
+                                title = audioOption.title,
                                 description = stringResource(R.string.audio_pcm_output_description),
-                                options = listOf<String>("16 Bits", "32 Bits", "Float"),
-                                selectedOption = selectedPcmOuput,
-                                onOptionsSelected = { selectedOption ->
-                                    // Set PCM Output
-                                    settingsVM.setPcmOutput(selectedOption)
-                                }
+                                options = listOf("16 Bits", "32 Bits", "Float"),
+                                selectedOption = selectedPcmOutput,
+                                onOptionsSelected = { settingsVM.setPcmOutput(it) }
                             )
                         }
                     }

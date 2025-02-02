@@ -1,91 +1,101 @@
 package com.afterloop.wavem.viewmodel.settings
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.afterloop.wavem.WavemApplication
 import com.afterloop.wavem.utils.LocaleUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val sharedPreferences: SharedPreferences,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    private val dataStore: DataStore<Preferences> =
+        (context.applicationContext as WavemApplication).dataStore
+
     companion object {
-        private const val PREFS_LANG_KEY = "app_language"
-        private const val PREFS_AUDIO_LOW_LATENCY_KEY = "audio_low_latency"
-        private const val PREFS_PCM_OUTPUT_KEY = "pcm_output"
+        private val PREFS_LANG_KEY = stringPreferencesKey("app_language")
+        private val PREFS_AUDIO_LOW_LATENCY_KEY = booleanPreferencesKey("audio_low_latency")
+        private val PREFS_PCM_OUTPUT_KEY = stringPreferencesKey("pcm_output")
+        private val PREFS_AUDIO_POWER_SAVING_MODE_KEY =
+            booleanPreferencesKey("audio_power_saving_mode")
     }
 
-    // TODO: LANGUAGE
-    private val _selectedLang = MutableStateFlow("en")
-    val selectedLang: MutableStateFlow<String> = _selectedLang
+    // LANGUAGE
+    val selectedLang: StateFlow<String> = dataStore.data
+        .map { it[PREFS_LANG_KEY] ?: "en" }
+        .stateIn(viewModelScope, SharingStarted.Lazily, "en")
 
-    init {
+    fun setSelectedLang(lang: String) {
         viewModelScope.launch {
-            _selectedLang.value = getSavedLanguage()
+            dataStore.edit { it[PREFS_LANG_KEY] = lang }
+            LocaleUtils.applyLocale(context, lang)
+            _requestRestart.value = true
         }
     }
 
-    private fun getSavedLanguage(): String {
-        return sharedPreferences.getString(PREFS_LANG_KEY, "en") ?: "en"
-    }
+    // AUDIO
+    val selectedAudioLowLatency: StateFlow<Boolean> = dataStore.data
+        .map { it[PREFS_AUDIO_LOW_LATENCY_KEY] ?: false }
+        .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
-    fun setSelectedLang(lang: String, onSuccess: () -> Unit) {
-        _selectedLang.value = lang
-        viewModelScope.launch {
-            sharedPreferences.edit().putString(PREFS_LANG_KEY, lang).apply()
-            LocaleUtils.saveLanguage(context, lang) // Guardar en SharedPreferences
-            LocaleUtils.applyLocale(context, lang)   // Aplicar cambios de idioma
-            onSuccess()                              // Reiniciar la app
-        }
-    }
-
-    private val _requestRestart = MutableStateFlow(false)
-    val requestRestart: MutableStateFlow<Boolean> = _requestRestart
-    fun setRequestRestart(restart: Boolean) {
-        _requestRestart.value = restart
-    }
-
-    // TODO: AUDIO
-    // Low Latency
-    private val _selectedAudioLowLatency = MutableStateFlow(
-        sharedPreferences.getBoolean(
-            PREFS_AUDIO_LOW_LATENCY_KEY,
-            false
-        )
-    )
-    val selectedAudioLowLatency: MutableStateFlow<Boolean> = _selectedAudioLowLatency
+    val selectedAudioPowerSavingMode: StateFlow<Boolean> = dataStore.data
+        .map { it[PREFS_AUDIO_POWER_SAVING_MODE_KEY] ?: false }
+        .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     fun setAudioLowLatency(lowLatency: Boolean) {
-        _selectedAudioLowLatency.value = lowLatency
         viewModelScope.launch {
-            sharedPreferences.edit()
-                .putBoolean(PREFS_AUDIO_LOW_LATENCY_KEY, lowLatency)
-                .apply()
+            dataStore.edit { prefs ->
+                prefs[PREFS_AUDIO_LOW_LATENCY_KEY] = lowLatency
+                if (lowLatency) {
+                    prefs[PREFS_AUDIO_POWER_SAVING_MODE_KEY] = false
+                }
+            }
+        }
+    }
+
+    fun setAudioPowerSavingMode(powerSavingMode: Boolean) {
+        viewModelScope.launch {
+            dataStore.edit { prefs ->
+                prefs[PREFS_AUDIO_POWER_SAVING_MODE_KEY] = powerSavingMode
+                if (powerSavingMode) {
+                    prefs[PREFS_AUDIO_LOW_LATENCY_KEY] = false
+                }
+            }
         }
     }
 
     // PCM
-    private val _selectedPcmOutput = MutableStateFlow(
-        sharedPreferences.getString(
-            PREFS_PCM_OUTPUT_KEY,
-            "16"
-        ) ?: "16"
-    )
-    val selectedPcmOutput: MutableStateFlow<String> = _selectedPcmOutput
+    val selectedPcmOutput: StateFlow<String> = dataStore.data
+        .map { it[PREFS_PCM_OUTPUT_KEY] ?: "16" }
+        .stateIn(viewModelScope, SharingStarted.Lazily, "16")
 
     fun setPcmOutput(output: String) {
-        _selectedPcmOutput.value = output
         viewModelScope.launch {
-            sharedPreferences.edit()
-                .putString(PREFS_PCM_OUTPUT_KEY, output)
-                .apply()
+            dataStore.edit { it[PREFS_PCM_OUTPUT_KEY] = output }
         }
+    }
+
+    // RESTART
+    private val _requestRestart = MutableStateFlow(false)
+    val requestRestart: StateFlow<Boolean> = _requestRestart.asStateFlow()
+    fun setRequestRestart(restart: Boolean) {
+        _requestRestart.value = restart
     }
 }

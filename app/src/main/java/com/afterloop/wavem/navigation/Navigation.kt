@@ -2,6 +2,7 @@ package com.afterloop.wavem.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.afterloop.wavem.routes.WavemRoutes
 import com.afterloop.wavem.ui.components.bottombars.BottomNavBarComponent
+import com.afterloop.wavem.ui.components.player.MiniPlayer
 import com.afterloop.wavem.ui.components.profile.MenuItems
 import com.afterloop.wavem.ui.components.profile.ProfileMenuDialog
 import com.afterloop.wavem.ui.components.profile.profileGoToSettings
@@ -42,11 +45,20 @@ fun WavemNavigationUI() {
                     showSheet = true
                 }
             }
-        }, bottomBar = { BottomNavBarComponent(navController) }) {
+        },
+        bottomBar = {
+            Column {
+                Column {
+                    MiniPlayer(Modifier.height(90.dp))
+                    BottomNavBarComponent(navController)
+                }
+            }
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValues)
         ) {
             // Floating Sheet
             ProfileMenuDialog(
