@@ -28,6 +28,7 @@ import com.afterloop.wavem.ui.components.profile.profileGoToSettings
 import com.afterloop.wavem.ui.components.topbars.TopAppBarComponent
 import com.afterloop.wavem.ui.screens.library.LibraryScreen
 import com.afterloop.wavem.viewmodel.audio.GetLocalAudio
+import com.afterloop.wavem.viewmodel.player.WavemPlayerViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -82,11 +83,12 @@ fun WavemNavigationUI() {
 private fun WavemNavigation(navController: NavHostController) {
     // VMs
     val audioVM = hiltViewModel<GetLocalAudio>()
+    val playerVM = hiltViewModel<WavemPlayerViewModel>()
 
     NavHost(navController = navController, startDestination = WavemRoutes.Library.route) {
         // Library
         composable(route = WavemRoutes.Library.route) {
-            LibraryScreen(audioVM)
+            LibraryScreen(audioVM, playerVM)
         }
 
         // Converter

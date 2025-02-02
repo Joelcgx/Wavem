@@ -19,10 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.afterloop.wavem.R
 import com.afterloop.wavem.viewmodel.audio.GetLocalAudio
+import com.afterloop.wavem.viewmodel.player.WavemPlayerViewModel
 
 @Composable
-fun LibraryScreen(audioVM: GetLocalAudio) {
+fun LibraryScreen(audioVM: GetLocalAudio, playerViewModel: WavemPlayerViewModel) {
     LaunchedEffect(Unit) {
+        // Load local audio
         audioVM.getLocalAudioFromStorage()
     }
 
@@ -59,7 +61,7 @@ fun LibraryScreen(audioVM: GetLocalAudio) {
         }
 
         when (selectedTabIndex) {
-            0 -> SongsContent(audioVM, songListState)
+            0 -> SongsContent(audioVM, songListState, playerViewModel)
         }
     }
 }

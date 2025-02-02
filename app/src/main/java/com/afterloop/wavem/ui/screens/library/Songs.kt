@@ -1,5 +1,6 @@
 package com.afterloop.wavem.ui.screens.library
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
@@ -25,23 +27,41 @@ import com.afterloop.wavem.R
 import com.afterloop.wavem.data.model.Audio
 import com.afterloop.wavem.ui.components.menu.PopupMenuComponent
 import com.afterloop.wavem.viewmodel.audio.GetLocalAudio
+import com.afterloop.wavem.viewmodel.player.WavemPlayerViewModel
 
 @Composable
-fun SongsContent(audioVM: GetLocalAudio, lazyListState: LazyListState) {
+fun SongsContent(
+    audioVM: GetLocalAudio,
+    lazyListState: LazyListState,
+    playerViewModel: WavemPlayerViewModel
+) {
+    // Obtiene la lista de canciones
     val audioList by audioVM.localAudioList.collectAsState()
+    // Set the initial Playlist
+    playerViewModel.setPlaylist(audioList)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = lazyListState
     ) {
         items(audioList.size, key = { audioList[it].id }) { index ->
-            SongItem(audio = audioList[index], audioVM = audioVM)
+            SongItem(
+                audio = audioList[index],
+                audioVM = audioVM,
+                playerViewModel = playerViewModel,
+                index = index
+            )
         }
     }
 }
 
 @Composable
-private fun SongItem(audio: Audio, audioVM: GetLocalAudio) {
+private fun SongItem(
+    audio: Audio,
+    audioVM: GetLocalAudio,
+    playerViewModel: WavemPlayerViewModel,
+    index: Int
+) {
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) } // Estado para controlar la visibilidad del diálogo
 
@@ -53,6 +73,14 @@ private fun SongItem(audio: Audio, audioVM: GetLocalAudio) {
     )
 
     ListItem(
+        modifier = Modifier.clickable(
+            role = Role.Button,
+            onClick = {
+                playerViewModel.setIsPlaying(true)
+                playerViewModel.setCurrentIndex(index)
+                playerViewModel.setIsPlayBackActive(true)
+            }
+        ),
         leadingContent = {
             AsyncImage(
                 modifier = Modifier.size(40.dp),
@@ -75,7 +103,12 @@ private fun SongItem(audio: Audio, audioVM: GetLocalAudio) {
                 options = menuOptions,
                 onOptionSelected = { option ->
                     when (option) {
-                        MenuOption.Play -> {}
+                        MenuOption.Play -> {
+                            // Reproducir la cancion
+                            playerViewModel.setIsPlaying(true)
+                            playerViewModel.setCurrentIndex(index)
+                            playerViewModel.setIsPlayBackActive(true)
+                        }
 
                         MenuOption.Convert -> {}
 
