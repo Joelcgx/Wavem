@@ -1,13 +1,12 @@
-package com.afterloop.wavem.viewmodel.ui.components.drawers
+package com.afterloop.wavem.viewmodel.ui.components.bottombars
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
-class DrawersViewModel @Inject constructor() : ViewModel() {
+class BottomBarsVM @Inject constructor() : ViewModel() {
     private val _selectedIndex = MutableStateFlow<Int>(0)
     val selectedIndex: MutableStateFlow<Int> = _selectedIndex
 

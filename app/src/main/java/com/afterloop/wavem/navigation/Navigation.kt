@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.afterloop.wavem.routes.WavemRoutes
+import com.afterloop.wavem.ui.components.bottombars.BottomNavBarComponent
 import com.afterloop.wavem.ui.components.profile.MenuItems
 import com.afterloop.wavem.ui.components.profile.ProfileMenuDialog
 import com.afterloop.wavem.ui.components.profile.profileGoToSettings
@@ -41,7 +42,7 @@ fun WavemNavigationUI() {
                     showSheet = true
                 }
             }
-        }) {
+        }, bottomBar = { BottomNavBarComponent(navController) }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
