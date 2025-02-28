@@ -2,6 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // KSP
+    id("com.google.devtools.ksp")
+    // Hilt
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -13,7 +18,7 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,6 +35,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -40,7 +46,17 @@ android {
 }
 
 dependencies {
-
+    /////////////////////////// DEBUG /////////////////////////////////
+    // Baseline Profile
+    implementation(libs.androidx.profileinstaller)
+    // Andriodx Startup
+    implementation(libs.androidx.startup.runtime)
+    // Desugar
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    ///////////////////////////////////////////////////////////////////
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
